@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+    nest:
+      image: gabrielsougri/sistema-delivery:latest
+      restart: aways
+      ports:
+        - '3000:3000'
+      volumes:
+        - ./app
+      environment:
+        DATABASE_URL:postgresql://postgres:09072001ga@localhost:5432/delivery?schema=public
+      depends_on: 
+        - postgres
+    postgres:
+      image: postgres:17.5-alpine3.20
+      restart: aways
+      volumes:
+        - /postgres_data:/var/lib/postgres
+      ports: 
+        - '5432:5432'
+      environment:
+        POSTGRES_USER:postgres
+        POSTGRES_PASSWORLD:09072001ga
+        POSTGRES_DB:delivery
+volumes:
+   - postgres_data:
