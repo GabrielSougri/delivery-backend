@@ -9,7 +9,7 @@ services:
       volumes:
         - .:/app
       environment: 
-        DATABASE_URL: postgresql://postgres:09072001ga@localhost:5432/delivery?schema=public
+        DATABASE_URL: postgresql://postgres:09072001ga@postgres:5432/delivery?schema=public
       depends_on:  
         - postgres
     postgres:
