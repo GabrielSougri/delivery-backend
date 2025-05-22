@@ -8,17 +8,17 @@ export class ProdutosController {
 
     @Post()
     create(@Body() createProductDto: CreateProductDto){
-        this.products.create(createProductDto)
+        return this.products.create(createProductDto)
     }
 
     @Delete(':id')
     delete(@Param('id') id: string){
-        this.products.delete(parseInt(id))
+        return this.products.delete(parseInt(id))
     }
 
     @Get(':id')
     findOne(@Param('id') id: string){
-        this.products.findOne(parseInt(id))
+        return this.products.findOne(parseInt(id))
     }
 }
 
