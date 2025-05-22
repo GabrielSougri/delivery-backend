@@ -1,0 +1,1 @@
+INSERT INTO "Categorias" values (1, 'Pizza')
