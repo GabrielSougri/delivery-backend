@@ -64,5 +64,5 @@ describe('ProdutosController', () => {
   
     it('esperado que o produto deletado seja uma promese do tipo Produto', () => {
       expect(controller.delete('1')).toBeInstanceOf(Promise<Produto>)
-    })
+    }) 
 });
