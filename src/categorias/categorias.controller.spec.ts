@@ -19,4 +19,13 @@ describe('CategoriasController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  
+  it('esperado que a categoria seja definida ao pegar a lista', () => {
+    expect(controller.findAll()).toBeDefined()
+  })
+
+  it('esperado que a categoria seja definida ao buscada por id', () => {
+    expect(controller.findOne('1')).toBeDefined()
+  })
 });

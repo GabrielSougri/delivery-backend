@@ -5,7 +5,7 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "new conection",
+            "name": "connection postgres",
             "database": "delivery",
             "username": "postgres"
         }

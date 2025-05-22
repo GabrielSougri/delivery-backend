@@ -31,6 +31,6 @@ export class ProdutosService {
     }
 
     async findOne(id: number){
-        return await this.prisma.produtos.findUnique({where: {id}})
+        return await this.prisma.produtos.findUnique({where: {id}, include: {categoria:true}})
     }
 }

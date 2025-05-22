@@ -17,4 +17,12 @@ describe('CategoriasService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('esperado que a categoria seja definida ao pegar a lista', () => {
+    expect(service.findAll()).toBeDefined()
+  })
+
+  it('esperado que a categoria seja definida ao buscada por id', () => {
+    expect(service.findOne(1)).toBeDefined()
+  })
 });
