@@ -4,7 +4,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL="postgresql://postgres:09072001ga@localhost:5432/delivery?schema=public"
+      - DATABASE_URL="postgresql://postgres:09072001ga@localhost:5432/delivery"
     volumes:
       - .:/app
  
