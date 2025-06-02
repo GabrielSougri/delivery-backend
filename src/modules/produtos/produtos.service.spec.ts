@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutosService } from './produtos.service';
 import { CreateProductDto } from './dto/create-product-dto';
 import { PrismaModule } from '../prisma/prisma.module';
+import { ProdutosRepository } from './produtos.repository';
 
 describe('ProdutosService', () => {
   let service: ProdutosService;
@@ -16,7 +17,7 @@ describe('ProdutosService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
-      providers: [ProdutosService],
+      providers: [ProdutosService, ProdutosRepository],
     }).compile();
 
     service = module.get<ProdutosService>(ProdutosService);
