@@ -1,0 +1,24 @@
+services:
+  nest:
+    image: gabrielsougri/sistema-delivery:v1 
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:09072001ga@host.docker.internal:5432/delivery
+    volumes:
+      - .:/app
+ 
+  db:
+    image: postgres:17.5
+    environment:
+      - POSTGRES_DB=delivery
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=09072001ga
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+      
+    
