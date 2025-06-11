@@ -1,0 +1,44 @@
+name: aplication test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+    CI:
+      runs-on: ubuntu-latest 
+      steps:
+        - name: checkout repository
+          uses: actions/checkout@v3
+
+        - name: node setup
+          uses: actions/setup-node@v3
+          with: 
+            node-version: "22.x"  
+
+        - name: installing dependêncies
+          run: npm install
+
+        - name: testing runner
+          run: npm run test
+    
+    CD:
+      runs-on: ubuntu-latest
+      needs: [CI]
+      steps:
+        - uses: actions/checkout@v3
+ 
+        - name: docker login
+          uses: docker/login-action@v3.4.0
+          with:
+            username: gabrielsougri
+            password: 09072001ga
+        
+        - name: docker build and push 
+          uses: docker/build-push-action@v6.17.0
+          with: 
+            context: .
+            file: ./Dockerfile 
+            push: true
+            tags: gabrielsougri/sistema-delivery:v1 
+    
