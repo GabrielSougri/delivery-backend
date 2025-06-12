@@ -21,8 +21,8 @@ describe('CategoriasController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('esperado que seja retornado a lista de categorias com os dados', () => {
-    expect(controller.findAll()).toEqual(
+  it('esperado que seja retornado a lista de categorias com os dados', async () => {
+    expect(await controller.findAll()).toEqual(
       [
         {
           id: 1,
@@ -32,8 +32,8 @@ describe('CategoriasController', () => {
     )
   })
 
-  it('esperado que seja retornado a categoria com os dados', () => {
-    expect(controller.findOne('1')).toEqual(
+  it('esperado que seja retornado a categoria com os dados', async () => {
+    expect(await controller.findOne('1')).toEqual(
       {
         id: 1,
         nome: 'Pizzas'

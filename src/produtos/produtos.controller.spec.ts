@@ -29,8 +29,8 @@ describe('ProdutosController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('esperado que retorne os dados do produto ao ser cadastrado', () => {
-    expect(controller.create(produto)).toEqual(
+  it('esperado que retorne os dados do produto ao ser cadastrado', async () => {
+    expect(await controller.create(produto)).toEqual(
       {
         id: 1,
         nome: 'quatro queijos',
@@ -42,8 +42,8 @@ describe('ProdutosController', () => {
     )
   })
 
-   it('esperado que retorne os dados do produto ao ser deletado', () => {
-    expect(controller.findOne('1')).toEqual(
+   it('esperado que retorne os dados do produto ao ser deletado', async () => {
+    expect(await controller.findOne('1')).toEqual(
       {
         id: 1,
         nome: 'quatro queijos',
@@ -55,8 +55,8 @@ describe('ProdutosController', () => {
     )
   })
 
-  it('esperado que retorne os dados do produto ao ser deletado', () => {
-    expect(controller.delete('1')).toEqual(
+  it('esperado que retorne os dados do produto ao ser deletado', async () => {
+    expect(await controller.delete('1')).toEqual(
       {
         id: 1,
         nome: 'quatro queijos',
