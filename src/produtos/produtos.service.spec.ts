@@ -1,41 +1,93 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutosService } from './produtos.service';
-import { CreateProductDto } from './dto/create-product-dto';
 import { PrismaModule } from '../prisma/prisma.module';
-import { ProdutosRepository } from './produtos.repository';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 describe('ProdutosService', () => {
   let service: ProdutosService;
 
-   const produto: CreateProductDto = {
-      nome: 'quatro queijos',
-      preco: 78.76,
-      descricao: 'feita de quatro queijos',
-      categoriaId: 1
+  const mockPrismaService = {
+    produtos: {
+      findUnique: jest.fn(),
+      create: jest.fn(),
+      delete: jest.fn()
     }
+  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
-      providers: [ProdutosService, ProdutosRepository]
+      providers: [
+        ProdutosService,
+        {provide: PrismaService, useValue: mockPrismaService}
+      ]
     }).compile();
 
     service = module.get<ProdutosService>(ProdutosService);
   });
+  
+  // teste de create
+  it('esperado criar um produto', async () => {
+    const produto = {
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita com quatro queijos',
+      categoriaId: 1
+    }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    const productCreated = {
+      id: 1, 
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita com quatro queijos',
+      categoriaId: 1
+    }
 
-  it('esperado que o produto venha definido ao ser cadastrado', () => {
-    expect(service.create(produto)).toBeDefined()
+    mockPrismaService.produtos.create.mockResolvedValue(productCreated)
+
+    const result = await service.create(produto)
+
+    expect(result).toEqual(productCreated)
   })
 
-  it('esperado que o produto venha definido ao ser cadastrado', () => {
-    expect(service.delete(1)).toBeDefined()
+  // teste de findOne
+  it('esperado retornar um produto', async () => {
+    const produto = {
+      id: 1,
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita de quatro queijos',
+      categoria: {
+        id: 1,
+        nome: 'Pizzas'
+      }
+    }
+
+    mockPrismaService.produtos.findUnique.mockResolvedValue(produto)
+
+    const result = await service.findOne(1)
+
+    expect(result).toEqual(produto)
   })
 
-  it('esperado que o produto venha definido ao ser cadastrado', () => {
-    expect(service.findOne(1)).toBeDefined()
+  // teste de delete
+  it('esperado deletar um produto', async () => {
+    const productDeleted = {
+      id: 1, 
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita com quatro queijos',
+      categoriaId: 1
+    }
+
+    mockPrismaService.produtos.delete.mockResolvedValue(productDeleted)
+
+    const result = await service.delete(1)
+
+    expect(result).toEqual(productDeleted)
   })
 });

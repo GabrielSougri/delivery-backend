@@ -1,15 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriasService } from './categorias.service';
 import { PrismaModule } from '../prisma/prisma.module';
-import { CategoriasRepository } from './categorias.repository';
 
 describe('CategoriasService', () => {
   let service: CategoriasService;
 
+  const mockPrismaService = {
+    categorias: {
+      findAll: jest.fn(),
+      findOne: jest.fn()
+    }
+  } 
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
-      providers: [CategoriasService, CategoriasRepository],
+      providers: [{provide: CategoriasService, useValue: mockPrismaService}],
     }).compile();
 
     service = module.get<CategoriasService>(CategoriasService);
@@ -19,11 +25,31 @@ describe('CategoriasService', () => {
     expect(service).toBeDefined();
   });
 
-  it('esperado que a lista de categorias venha definida', () => {
-    expect(service.findAll()).toBeDefined()
+  it('esperado retornar uma lista de categorias', async () => {
+    const categorias = [
+      {
+        id: 1,
+        nome: 'Pizzas'
+      }
+    ]
+
+    mockPrismaService.categorias.findAll.mockResolvedValue(categorias)
+
+    const categories = await service.findAll()
+
+    expect(categories).toBe(categorias)
   })
 
-  it('esperado que a categoria venha definida ao ser buscada por id', () => {
-    expect(service.findOne(1))
-  })
+  it('esperado retornar uma categoria', async () => {
+    const categoria = {
+      id: 1,
+      nome: 'Pizzas'
+    }
+
+    mockPrismaService.categorias.findOne.mockResolvedValue(categoria)
+
+    const category = await service.findOne(1)
+
+    expect(category).toBe(categoria)
+  })  
 });

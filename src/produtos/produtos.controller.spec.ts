@@ -3,23 +3,21 @@ import { ProdutosController } from './produtos.controller';
 import { CreateProductDto } from './dto/create-product-dto';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ProdutosService } from './produtos.service';
-import { ProdutosRepository } from './produtos.repository';
 
 describe('ProdutosController', () => {
   let controller: ProdutosController;
 
-  const produto: CreateProductDto = {
-    nome: 'quatro queijos',
-    preco: 78.76,
-    descricao: 'feita de quatro queijos',
-    categoriaId: 1
+  const mockProductService = {
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    delete: jest.fn()
   }
   
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
-      providers: [ProdutosService, ProdutosRepository],
       controllers: [ProdutosController],
+      providers: [{provide: ProdutosService, useValue: mockProductService}]
     }).compile();
 
     controller = module.get<ProdutosController>(ProdutosController);
@@ -29,42 +27,80 @@ describe('ProdutosController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('esperado que retorne os dados do produto ao ser cadastrado', async () => {
-    expect(await controller.create(produto)).toEqual(
-      {
-        id: 1,
-        nome: 'quatro queijos',
-        imagem: '',
-        preco: 78.76,
-        descricao: 'feita de quatro queijos',
-        categoriaId: 1
-      }
-    )
+  // teste de create 
+  it('esperado criar um produto', async () => {
+    const produto = {
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita com quatro queijos',
+      categoriaId: 1
+    }
+
+    const productCreated = {
+      id: 1, 
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita com quatro queijos',
+      categoriaId: 1
+    }
+
+    mockProductService.create.mockResolvedValue(productCreated)
+
+    const result = await controller.create(produto)
+
+    expect(result).toEqual(productCreated)
+    expect(mockProductService.create).toHaveBeenCalledWith({
+      data: produto
+    })
   })
 
-   it('esperado que retorne os dados do produto ao ser deletado', async () => {
-    expect(await controller.findOne('1')).toEqual(
-      {
+  // teste de findOne
+  it('esperado retornar um produto', async () => {
+    const produto = {
+      id: 1,
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita de quatro queijos',
+      categoria: {
         id: 1,
-        nome: 'quatro queijos',
-        imagem: '',
-        preco: 78.76,
-        descricao: 'feita de quatro queijos',
-        categoriaId: 1
+        nome: 'Pizzas'
       }
-    )
+    }
+
+    mockProductService.findUnique.mockResolvedValue(produto)
+
+    const result = await controller.findOne('1')
+
+    expect(result).toEqual(produto)
+    expect(mockProductService.findUnique).toHaveBeenCalledWith({
+      where: {
+        id: 1
+      }
+    })
   })
 
-  it('esperado que retorne os dados do produto ao ser deletado', async () => {
-    expect(await controller.delete('1')).toEqual(
-      {
-        id: 1,
-        nome: 'quatro queijos',
-        imagem: '',
-        preco: 78.76,
-        descricao: 'feita de quatro queijos',
-        categoriaId: 1
+  // teste de delete
+  it('esperado deletar um produto', async () => {
+    const produto = {
+      nome: 'Quatro queijos',
+      image: '',
+      preco: 70.65,
+      descricao: 'feita com quatro queijos',
+      categoriaId: 1
+    }
+
+    mockProductService.delete.mockResolvedValue(1)
+
+    const result = await controller.delete('1')
+
+    expect(result).toEqual(produto)
+    expect(mockProductService.delete).toHaveBeenCalledWith({
+      where: { 
+        id: 1
       }
-    )
+    })
   })
 });
