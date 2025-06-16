@@ -4,5 +4,5 @@ export class CreateProductDto {
     preco: number
     descricao: string
     categoriaId?: number
-    categoriaName?: string
+    categoriaName: string
 }
