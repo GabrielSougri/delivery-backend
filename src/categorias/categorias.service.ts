@@ -13,6 +13,9 @@ export class CategoriasService {
         return this.prisma.categorias.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                produtos: true
             }
         })
     }
