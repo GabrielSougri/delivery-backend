@@ -13,7 +13,7 @@ services:
     environment:
       - POSTGRES_DB=delivery
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=09072001gax
+      - POSTGRES_PASSWORD=09072001ga
     ports:
       - "5432:5432"
     volumes:
