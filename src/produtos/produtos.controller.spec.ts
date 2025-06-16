@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutosController } from './produtos.controller';
-import { CreateProductDto } from './dto/create-product-dto';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ProdutosService } from './produtos.service';
 
@@ -9,7 +8,7 @@ describe('ProdutosController', () => {
 
   const mockProductService = {
     create: jest.fn(),
-    findUnique: jest.fn(),
+    findOne: jest.fn(),
     delete: jest.fn()
   }
   
@@ -51,9 +50,7 @@ describe('ProdutosController', () => {
     const result = await controller.create(produto)
 
     expect(result).toEqual(productCreated)
-    expect(mockProductService.create).toHaveBeenCalledWith({
-      data: produto
-    })
+    expect(mockProductService.create).toHaveBeenCalledWith(produto)
   })
 
   // teste de findOne
@@ -70,16 +67,12 @@ describe('ProdutosController', () => {
       }
     }
 
-    mockProductService.findUnique.mockResolvedValue(produto)
+    mockProductService.findOne.mockResolvedValue(produto)
 
     const result = await controller.findOne('1')
 
     expect(result).toEqual(produto)
-    expect(mockProductService.findUnique).toHaveBeenCalledWith({
-      where: {
-        id: 1
-      }
-    })
+    expect(mockProductService.findOne).toHaveBeenCalledWith(1)
   })
 
   // teste de delete
@@ -92,15 +85,11 @@ describe('ProdutosController', () => {
       categoriaId: 1
     }
 
-    mockProductService.delete.mockResolvedValue(1)
+    mockProductService.delete.mockResolvedValue(produto)
 
     const result = await controller.delete('1')
 
     expect(result).toEqual(produto)
-    expect(mockProductService.delete).toHaveBeenCalledWith({
-      where: { 
-        id: 1
-      }
-    })
+    expect(mockProductService.delete).toHaveBeenCalledWith(1)
   })
 });

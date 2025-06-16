@@ -8,7 +8,7 @@ describe('CategoriasController', () => {
   
   const mockCategoryService = {
     findAll: jest.fn(),
-    findUnique: jest.fn()
+    findOne: jest.fn()
   }
 
   beforeEach(async () => {
@@ -49,13 +49,11 @@ describe('CategoriasController', () => {
       nome: 'Pizzas'
     }
 
-    mockCategoryService.findUnique.mockResolvedValue(categoria)
+    mockCategoryService.findOne.mockResolvedValue(categoria)
 
     const category = await controller.findOne('1')
 
     expect(category).toEqual(categoria)
-    expect(mockCategoryService.findUnique).toHaveBeenCalledWith({
-      where: 1
-    })
+    expect(mockCategoryService.findOne).toHaveBeenCalledWith(1)
   })
 });

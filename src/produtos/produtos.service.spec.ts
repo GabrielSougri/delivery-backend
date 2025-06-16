@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutosService } from './produtos.service';
 import { PrismaModule } from '../prisma/prisma.module';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('ProdutosService', () => {
   let service: ProdutosService;
@@ -84,7 +84,7 @@ describe('ProdutosService', () => {
       categoriaId: 1
     }
 
-    mockPrismaService.produtos.delete.mockResolvedValue(productDeleted)
+    jest.spyOn(mockPrismaService.produtos, 'delete').mockResolvedValue(productDeleted)
 
     const result = await service.delete(1)
 

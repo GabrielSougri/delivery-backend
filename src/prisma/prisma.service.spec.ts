@@ -47,9 +47,19 @@ describe('PrismaService', () => {
   })
 
   it('esperado retornar um produto', async () => {
-    const productFound = await service.produtos.findUnique({
+    const createProduct = await service.produtos.create({
+    data: {
+      nome: 'Quatro queijos',
+      imagem: '',
+      preco: 70.65,
+      descricao: 'feita de quatro queijos',
+      categoriaId: 1
+    }
+  })
+
+  const productFound = await service.produtos.findUnique({
       where: {
-        id: 1
+        id: createProduct.id
       }
     })
 
@@ -58,9 +68,18 @@ describe('PrismaService', () => {
   })
 
   it('esperado deletar um produto', async () => {
+    const createProduct = await service.produtos.create({
+      data: {
+        nome: 'Quatro queijos',
+        imagem: '',
+        preco: 70.65,
+        descricao: 'feita de quatro queijos',
+        categoriaId: 1
+      }
+    })
     const productDeleted = await service.produtos.delete({
       where: {
-        id: 1
+        id: createProduct.id
       }
     })
 

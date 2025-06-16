@@ -1,21 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriasService } from './categorias.service';
 import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('CategoriasService', () => {
   let service: CategoriasService;
 
   const mockPrismaService = {
     categorias: {
-      findAll: jest.fn(),
-      findOne: jest.fn()
+      findUnique: jest.fn(),
+      findMany: jest.fn()
     }
   } 
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
-      providers: [{provide: CategoriasService, useValue: mockPrismaService}],
+      providers: [CategoriasService,
+        {provide: PrismaService, useValue: mockPrismaService}],
     }).compile();
 
     service = module.get<CategoriasService>(CategoriasService);
@@ -33,7 +35,7 @@ describe('CategoriasService', () => {
       }
     ]
 
-    mockPrismaService.categorias.findAll.mockResolvedValue(categorias)
+    mockPrismaService.categorias.findMany.mockResolvedValue(categorias)
 
     const categories = await service.findAll()
 
@@ -46,7 +48,7 @@ describe('CategoriasService', () => {
       nome: 'Pizzas'
     }
 
-    mockPrismaService.categorias.findOne.mockResolvedValue(categoria)
+    mockPrismaService.categorias.findUnique.mockResolvedValue(categoria)
 
     const category = await service.findOne(1)
 
