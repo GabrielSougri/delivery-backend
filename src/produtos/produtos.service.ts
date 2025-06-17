@@ -8,20 +8,24 @@ export class ProdutosService {
 
     async create(createProductDto: CreateProductDto){
         let categoriaId = 0
-        
-        switch (createProductDto.categoriaName) {
-            case 'Pizza' : categoriaId = 1; break;
-            case 'Pastel' : categoriaId = 2; break
-            default: categoriaId = 0
-        }
 
+        switch(createProductDto.categoriaName){
+            case 'Pizza' : categoriaId = 1; break;
+            case 'Pastel' : categoriaId = 2; break;
+            default : categoriaId = 0;
+        }
+        
         return await this.prisma.produtos.create({
             data: {
                 nome: createProductDto.nome,
                 imagem: createProductDto.imagem ?? '',
                 preco: createProductDto.preco,
                 descricao: createProductDto.descricao,
-                categoriaId: categoriaId
+                categoria: {
+                    connect: {    
+                        id: categoriaId,
+                    }
+                }
             }
         })
     }
