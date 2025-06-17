@@ -7,14 +7,6 @@ export class ProdutosService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(createProductDto: CreateProductDto){
-        let categoriaId = 0
-
-        switch(createProductDto.categoriaName){
-            case 'Pizza' : categoriaId = 1; break;
-            case 'Pastel' : categoriaId = 2; break;
-            default : categoriaId = 0;
-        }
-        
         return await this.prisma.produtos.create({
             data: {
                 nome: createProductDto.nome,
@@ -22,8 +14,8 @@ export class ProdutosService {
                 preco: createProductDto.preco,
                 descricao: createProductDto.descricao,
                 categoria: {
-                    connect: {    
-                        id: categoriaId,
+                    connect: {        
+                        id: createProductDto.categoriaId
                     }
                 }
             }
