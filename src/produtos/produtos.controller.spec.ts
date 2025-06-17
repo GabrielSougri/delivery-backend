@@ -33,7 +33,7 @@ describe('ProdutosController', () => {
       image: '',
       preco: 70.65,
       descricao: 'feita com quatro queijos',
-      categoriaId: 1
+      categoriaName: 'Pizza'
     }
 
     const productCreated = {
