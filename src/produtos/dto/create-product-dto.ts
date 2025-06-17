@@ -3,5 +3,5 @@ export class CreateProductDto {
     imagem?: string
     preco: number
     descricao: string
-    categoriaId: number
+    categoriaId: number 
 }
