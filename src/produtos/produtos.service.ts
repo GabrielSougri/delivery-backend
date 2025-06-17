@@ -13,11 +13,7 @@ export class ProdutosService {
                 imagem: createProductDto.imagem ?? '',
                 preco: createProductDto.preco,
                 descricao: createProductDto.descricao,
-                categoria: {
-                    connect: {        
-                        id: createProductDto.categoriaId
-                    }
-                }
+                categoriaId: createProductDto.categoriaId
             }
         })
     }
